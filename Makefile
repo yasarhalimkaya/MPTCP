@@ -3,7 +3,7 @@ all: client server
 CLIENT_SRC = Runner.cpp \
 			 Connection.cpp
 			 
-SERVER_SRC = DummyServer.cpp
+SERVER_SRC = EchoServer.cpp
 
 client: $(CLIENT_SRC)
 	g++ $(CLIENT_SRC) -o client
