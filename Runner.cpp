@@ -1,13 +1,6 @@
 #include "Connection.hpp"
 #include <vector>
 
-struct GetFileListRequest {
-	char requestType;
-	char fileId;
-	int startByte;
-	int endByte;
-};
-
 int main(int argc, char* argv[]) {
 
 	// Parse arguments
@@ -40,7 +33,6 @@ int main(int argc, char* argv[]) {
 		std::cout << "There is not enough valid server addresses" << std::endl;
 		return -1;
 	}
-
 
 	// TODO: Remove before submission
 	Connection connection(servers.at(0));
