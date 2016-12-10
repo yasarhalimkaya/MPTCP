@@ -1,26 +1,14 @@
 #include "Connection.hpp"
 
-Connection::Connection(const char * destIp, int destPort) {
-	this->destPort = destPort;
-
-	this->destIp = new char(sizeof(destIp));
-
-	if (this->destIp) {
-		strcpy(this->destIp, destIp);
-	}
-
+Connection::Connection(ServerConf serverConf) {
 	// Create inet structure for given properties
-	host = gethostbyname(this->destIp);
-
-	std::cout << "Given host addr : " << this->destIp << std::endl;
-	std::cout << "Host addr : " << host->h_name << std::endl;
-	std::cout << "Port : " << this->destPort << std::endl;
+	host = gethostbyname(serverConf.ipAddr.c_str());
 
 	destAddr.sin_family = AF_INET;
-	destAddr.sin_port = this->destPort;
+	destAddr.sin_port = serverConf.port;
 	bcopy(host->h_addr, (char*)&destAddr.sin_addr, host->h_length);
 
-	// Create a UDP socket for localhost
+	// Create a UDP socket
 	this->sockFd = socket(AF_INET, SOCK_DGRAM, 0);
 
 	if (!sockFd) {
@@ -29,7 +17,6 @@ Connection::Connection(const char * destIp, int destPort) {
 	} else {
 		this->initialized = true;
 	}
-
 }
 
 bool Connection::send(const char * message) {
@@ -54,10 +41,6 @@ bool Connection::send(const char * message) {
 }
 
 Connection::~Connection() {
-	if (this->destIp) {
-		delete this->destIp;
-	}
-
 	if (this->initialized) {
 		std::cout << "Shutting down the socket" << std::endl;
 		shutdown(this->sockFd, SHUT_RDWR);
