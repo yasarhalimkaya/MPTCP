@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 	struct sockaddr_in serverAddr;
 	memset(&serverAddr, 0, sizeof(serverAddr));
 
-	serverAddr.sin_family = AF_INET; // Localhost
+	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_port = port;
 	serverAddr.sin_addr.s_addr = INADDR_ANY;
 

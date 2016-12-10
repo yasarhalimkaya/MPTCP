@@ -5,7 +5,7 @@ int main(int argc, char* argv[]) {
 
 	// Parse arguments
 	if (argc < 3) {
-		std::cout << "Specify at least two server interface address and port" << std::endl;
+		std::cout << "Specify at least two server interface addresses and ports" << std::endl;
 		return 0;
 	}
 
