@@ -1,6 +1,13 @@
 #include "Connection.hpp"
 #include <vector>
 
+struct GetFileListRequest {
+	char requestType;
+	char fileId;
+	int startByte;
+	int endByte;
+};
+
 int main(int argc, char* argv[]) {
 
 	// Parse arguments
@@ -34,21 +41,19 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	// TODO: Remove before submission
-	// Print server confs for debug purposes
-	for (int i = 0; i < servers.size(); i++) {
-		std::cout << "Server " << i << " ip " << servers.at(i).ipAddr << " port " << servers.at(i).port << std::endl;
-	}
 
+	// TODO: Remove before submission
 	Connection connection(servers.at(0));
 
-	char message[100] = "Message";
+	unsigned char message[10] = "terminate";
 
-	connection.send(message);
+	connection.send(message, sizeof(message));
 
-	strcpy(message, "terminate");
+	memset(message, 0, sizeof(message));
 
-	connection.send(message);
+	connection.recv(message, sizeof(message));
+
+	std::cout << "Received : " << message << std::endl;
 
 	return 0;
 }

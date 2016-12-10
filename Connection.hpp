@@ -14,7 +14,7 @@ private:
 
 public:
 	Connection(ServerConf serverConf);
-	bool send(const char * message, int size);
-	bool recv(char * message, int size);
+	bool send(const unsigned char * message, int size);
+	bool recv(unsigned char * message, int size);
 	virtual ~Connection();
 };

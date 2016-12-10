@@ -44,33 +44,44 @@ int main(int argc, char* argv[]) {
 	// Listen incoming messages
 	// As this is a UDP socket, there is no listen() or accept() calls
 	struct sockaddr_in clientAddr; // Will be filled with the address of incoming message owners
-	char messageBuffer[100]; // Will hold the incoming data
+	unsigned char messageBuffer[100]; // Will hold the incoming data
 
 	while(true) {
 		memset(messageBuffer, 0, sizeof(messageBuffer));
 
 		socklen_t clientAddrLen = sizeof(clientAddr);
-		int n = recvfrom(sockFd, messageBuffer, sizeof(messageBuffer), 0, (sockaddr *)&clientAddr, &clientAddrLen);
+		int recvN = recvfrom(sockFd, messageBuffer, sizeof(messageBuffer), 0, (sockaddr *)&clientAddr, &clientAddrLen);
 
-		if (n <= 0) {
+		if (recvN <= 0) {
 			std::cout << "No data received, listen again" << std::endl;
 			continue;
 		}
 
 		std::cout << "Received data : " << messageBuffer << std::endl;
 
-		if (strcmp(messageBuffer, "terminate") == 0) {
+		int sentN = sendto(sockFd, messageBuffer, recvN, 0, (struct sockaddr *)&clientAddr, clientAddrLen);
+
+		std::cout << "Sent byte number " << sentN << std::endl;
+
+		if (sentN == -1) {
+			std::cout << "DummyServer: sendto failed" << std::endl;
+			return false;
+		}
+
+		if (sentN < recvN) {
+			std::cout << "DummyServer: Message could not be sent successfully" << std::endl;
+			return false;
+		}
+
+		if (strcmp((const char *)messageBuffer, "terminate") == 0) {
 			break;
 		}
 	}
 
+TERMINATE:
+	// Deallocate resource and shutdown
 	std::cout << "Shutting down the socket" << std::endl;
 	shutdown(sockFd, SHUT_RDWR);
 	close(sockFd);
 	return 0;
-
-TERMINATE:
-	// Deallocate resource and shutdown
-
-	return -1;
 }

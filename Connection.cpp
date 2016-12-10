@@ -19,6 +19,7 @@ Connection::Connection(ServerConf serverConf) {
 	clientAddr.sin_port = 0;
 	clientAddr.sin_addr.s_addr = INADDR_ANY;
 
+	// Bind socket to client address to be able to receive data
 	if (bind(sockFd, (const sockaddr *)&clientAddr, sizeof(clientAddr)) != 0) {
 		std::cout << "Failed to bind the socket to given address" << std::endl;
 		this->initialized = false;
@@ -32,7 +33,7 @@ Connection::Connection(ServerConf serverConf) {
 	}
 }
 
-bool Connection::send(const char * message, int size) {
+bool Connection::send(const unsigned char * message, int size) {
 	if (!this->initialized) {
 		std::cout << "Connection: Connection is not initialized" << std::endl;
 		return false;
@@ -53,7 +54,7 @@ bool Connection::send(const char * message, int size) {
 	return true;
 }
 
-bool Connection::recv(char * message, int size) {
+bool Connection::recv(unsigned char * message, int size) {
 	if (!this->initialized) {
 		std::cout << "Connection: Connection is not initialized" << std::endl;
 		return false;
@@ -75,6 +76,7 @@ bool Connection::recv(char * message, int size) {
 
 	return true;
 }
+
 Connection::~Connection() {
 	if (this->initialized) {
 		std::cout << "Shutting down the socket" << std::endl;
