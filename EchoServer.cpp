@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 /**
- * @summary A dummy server which listens
+ * @summary An echo server which listens
  * 			to given port number for UDP connections
  * 			and echoes the incoming data
  *
@@ -64,12 +64,12 @@ int main(int argc, char* argv[]) {
 		std::cout << "Sent byte number " << sentN << std::endl;
 
 		if (sentN == -1) {
-			std::cout << "DummyServer: sendto failed" << std::endl;
+			std::cout << "EchoServer: sendto failed" << std::endl;
 			return false;
 		}
 
 		if (sentN < recvN) {
-			std::cout << "DummyServer: Message could not be sent successfully" << std::endl;
+			std::cout << "EchoServer: Message could not be sent successfully" << std::endl;
 			return false;
 		}
 
