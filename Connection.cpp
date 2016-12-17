@@ -6,7 +6,7 @@ Connection::Connection(ServerConf serverConf) {
 	host = gethostbyname(serverConf.ipAddr.c_str());
 
 	destAddr.sin_family = AF_INET;
-	destAddr.sin_port = serverConf.port;
+	destAddr.sin_port = htons(serverConf.port);
 	bcopy(host->h_addr, (char*)&destAddr.sin_addr, host->h_length);
 
 	// Create a UDP socket
