@@ -2,6 +2,7 @@
 #define CONNECTION_HPP_
 
 #include "Common.hpp"
+#include "Request.hpp"
 
 #include <iostream>
 #include <netdb.h>
@@ -13,6 +14,7 @@ class Connection {
 public:
 	Connection(ServerConf serverConf);
 	bool send(const unsigned char * message, int size);
+	bool send(Request & request);
 	bool recv(unsigned char * message, int size);
 	virtual ~Connection();
 

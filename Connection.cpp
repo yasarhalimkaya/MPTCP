@@ -55,6 +55,10 @@ bool Connection::send(const unsigned char * message, int size) {
 	return true;
 }
 
+bool Connection::send(Request & request){
+	return send(request.getData(), request.getSize());
+}
+
 bool Connection::recv(unsigned char * message, int size) {
 	if (!this->initialized) {
 		std::cout << "Connection: Connection is not initialized" << std::endl;
