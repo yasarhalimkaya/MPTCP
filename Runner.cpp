@@ -1,5 +1,7 @@
 #include "Connection.hpp"
 #include <vector>
+#include <cstring>
+#include <cstdlib>
 
 int main(int argc, char* argv[]) {
 

@@ -1,4 +1,5 @@
 #include "Connection.hpp"
+#include <cstring>
 
 Connection::Connection(ServerConf serverConf) {
 	// Create inet structure to send data to server

@@ -2,6 +2,8 @@
 #include <sys/socket.h>
 #include <netinet/ip.h>
 #include <unistd.h>
+#include <cstring>
+#include <cstdlib>
 
 /**
  * @summary An echo server which listens
