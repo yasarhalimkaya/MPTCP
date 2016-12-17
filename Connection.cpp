@@ -34,7 +34,7 @@ Connection::Connection(ServerConf serverConf) {
 	}
 }
 
-bool Connection::send(const unsigned char * message, int size) {
+bool Connection::send(const uint8_t * message, size_t size) {
 	if (!this->initialized) {
 		std::cout << "Connection: Connection is not initialized" << std::endl;
 		return false;
@@ -59,7 +59,7 @@ bool Connection::send(Request & request){
 	return send(request.getData(), request.getSize());
 }
 
-bool Connection::recv(unsigned char * message, int size) {
+bool Connection::recv(uint8_t * message, size_t size) {
 	if (!this->initialized) {
 		std::cout << "Connection: Connection is not initialized" << std::endl;
 		return false;

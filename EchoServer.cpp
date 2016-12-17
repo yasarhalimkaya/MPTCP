@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 	// Listen incoming messages
 	// As this is a UDP socket, there is no listen() or accept() calls
 	struct sockaddr_in clientAddr; // Will be filled with the address of incoming message owners
-	unsigned char messageBuffer[100]; // Will hold the incoming data
+	uint8_t messageBuffer[100]; // Will hold the incoming data
 
 	while(true) {
 		memset(messageBuffer, 0, sizeof(messageBuffer));

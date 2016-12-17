@@ -13,9 +13,9 @@
 class Connection {
 public:
 	Connection(ServerConf serverConf);
-	bool send(const unsigned char * message, int size);
+	bool send(const uint8_t * message, size_t size);
 	bool send(Request & request);
-	bool recv(unsigned char * message, int size);
+	bool recv(uint8_t * message, size_t size);
 	virtual ~Connection();
 
 private:

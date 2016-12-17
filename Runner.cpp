@@ -1,4 +1,6 @@
 #include "Connection.hpp"
+#include "FileListRequest.hpp"
+
 #include <vector>
 #include <cstring>
 #include <cstdlib>
@@ -38,16 +40,6 @@ int main(int argc, char* argv[]) {
 
 	// TODO: Remove before submission
 	Connection connection(servers.at(0));
-
-	unsigned char message[10] = "terminate";
-
-	connection.send(message, sizeof(message));
-
-	memset(message, 0, sizeof(message));
-
-	connection.recv(message, sizeof(message));
-
-	std::cout << "Received : " << message << std::endl;
 
 	return 0;
 }

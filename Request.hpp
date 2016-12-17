@@ -6,16 +6,16 @@
 // TODO: Add class summary
 class Request {
 public:
-	unsigned char * getData();
+	uint8_t * getData();
 	int getSize();
 	virtual ~Request();
 
 protected:
 	Request(); // Instantiation is not allowed
 
-	unsigned char requestTypeNumber;
+	uint8_t requestTypeNumber;
 	const static int REQUEST_SIZE = 10;
-	unsigned char data[REQUEST_SIZE];
+	uint8_t data[REQUEST_SIZE];
 };
 
 inline int Request::getSize(){

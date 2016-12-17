@@ -5,7 +5,7 @@ Request::Request() {
 	memset(data, 0, sizeof(data));
 }
 
-unsigned char * Request::getData(){
+uint8_t * Request::getData(){
 	return this->data;
 }
 
