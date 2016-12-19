@@ -8,11 +8,13 @@ CLIENT_SRC = Runner.cpp \
 			 
 SERVER_SRC = EchoServer.cpp
 
+CFLAGS = -std=c++11
+
 client: $(CLIENT_SRC)
-	g++ $(CLIENT_SRC) -o client
+	g++ $(CLIENT_SRC) $(CFLAGS) -o client
 	
 server: $(SERVER_SRC)
-	g++ $(SERVER_SRC) -o server
+	g++ $(SERVER_SRC) $(CFLAGS) -o server
 	
 clean:
 	rm -rvf client server
