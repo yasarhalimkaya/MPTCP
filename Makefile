@@ -3,7 +3,8 @@ all: client server
 CLIENT_SRC = Runner.cpp \
 			 Connection.cpp \
 			 Request.cpp \
-			 FileListRequest.cpp
+			 FileListRequest.cpp \
+			 FileSizeRequest.cpp
 			 
 SERVER_SRC = EchoServer.cpp
 
