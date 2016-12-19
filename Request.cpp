@@ -1,4 +1,5 @@
 #include "Request.hpp"
+#include <cstring>
 
 Request::Request() {
 	requestTypeNumber = 0;
