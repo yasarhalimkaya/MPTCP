@@ -4,7 +4,8 @@ CLIENT_SRC = Runner.cpp \
 			 Connection.cpp \
 			 Request.cpp \
 			 FileListRequest.cpp \
-			 FileSizeRequest.cpp
+			 FileSizeRequest.cpp \
+			 FileDataRequest.cpp
 			 
 SERVER_SRC = EchoServer.cpp
 

@@ -1,5 +1,7 @@
 #include "Connection.hpp"
 #include "FileListRequest.hpp"
+#include "FileSizeRequest.hpp"
+#include "FileDataRequest.hpp"
 
 #include <vector>
 #include <cstring>
@@ -40,6 +42,9 @@ int main(int argc, char* argv[]) {
 
 	// TODO: Remove before submission
 	Connection connection(servers.at(0));
+	
+	FileDataRequest fileDataRequest(1, 1, 50);
+	connection.send(fileDataRequest);
 
 	return 0;
 }
