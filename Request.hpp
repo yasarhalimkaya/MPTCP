@@ -7,18 +7,24 @@
 class Request {
 public:
 	uint8_t * getData();
-	int getSize();
+	size_t getSize();
 	virtual ~Request();
 
 protected:
-	Request(); // Instantiation is not allowed
+	// Instantiation of base class is not allowed
+	Request();
 
 	uint8_t requestTypeNumber;
+	// Request size is fixed for all Request types
 	const static int REQUEST_SIZE = 10;
 	uint8_t data[REQUEST_SIZE];
 };
 
-inline int Request::getSize(){
+inline uint8_t * Request::getData(){
+    return this->data;
+}
+
+inline size_t Request::getSize(){
 	return REQUEST_SIZE;
 }
 

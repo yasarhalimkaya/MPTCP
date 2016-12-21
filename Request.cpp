@@ -6,10 +6,6 @@ Request::Request() {
 	memset(data, 0, sizeof(data));
 }
 
-uint8_t * Request::getData(){
-	return this->data;
-}
-
 Request::~Request() {
 
 }
