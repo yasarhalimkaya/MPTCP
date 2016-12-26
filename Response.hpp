@@ -4,26 +4,26 @@
 #include <iostream>
 
 // TODO: Add class summary
-class Response
-{
+class Response {
 public:
     // Buffer to received data is allocated by derived classes
-    virtual uint8_t* getBuffer() = 0;
+    uint8_t* getBuffer();
     // Size of the buffer is calculated according to the request
     size_t getSize();
     virtual ~Response();
 
 protected:
     Response();
+    uint8_t responseType;
     uint8_t* buffer;
     size_t size;
 };
 
-inline uint8_t * Response::getBuffer(){
+inline uint8_t * Response::getBuffer() {
     return this->buffer;
 }
 
-inline size_t Response::getSize(){
+inline size_t Response::getSize() {
     return this->size;
 }
 

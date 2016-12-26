@@ -65,6 +65,11 @@ bool Connection::recv(uint8_t * message, size_t size) {
 		return false;
 	}
 
+	if (message == 0) {
+		std::cout << "Connection: no space was allocated for recv buffer" << std::endl;
+		return false;
+	}
+
 	sockaddr_in from;
 	socklen_t fromLen = sizeof(from);
 	int n = recvfrom(this->sockFd, message, size, 0, (struct sockaddr *)&from, &fromLen);
@@ -80,6 +85,10 @@ bool Connection::recv(uint8_t * message, size_t size) {
 	}
 
 	return true;
+}
+
+bool Connection::recv(Response & response) {
+	return recv(response.getBuffer(), response.getSize());
 }
 
 Connection::~Connection() {

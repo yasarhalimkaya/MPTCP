@@ -3,6 +3,7 @@
 
 #include "Common.hpp"
 #include "Request.hpp"
+#include "Response.hpp"
 
 #include <iostream>
 #include <netdb.h>
@@ -13,9 +14,13 @@
 class Connection {
 public:
 	Connection(ServerConf serverConf);
+
 	bool send(const uint8_t * message, size_t size);
 	bool send(Request & request);
+
 	bool recv(uint8_t * message, size_t size);
+	bool recv(Response & response);
+
 	virtual ~Connection();
 
 private:

@@ -11,11 +11,8 @@ public:
 	virtual ~Request();
 
 protected:
-	// Instantiation of base class is not allowed
 	Request();
-
-	uint8_t requestTypeNumber;
-	// Request size is fixed for all Request types
+	uint8_t requestType;
 	const static int REQUEST_SIZE = 10;
 	uint8_t data[REQUEST_SIZE];
 };

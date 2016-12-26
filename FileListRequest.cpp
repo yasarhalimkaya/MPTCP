@@ -1,8 +1,8 @@
 #include "FileListRequest.hpp"
 
 FileListRequest::FileListRequest() {
-	requestTypeNumber = 1;
-	data[0] = requestTypeNumber;
+	requestType = 1;
+	data[0] = requestType;
 }
 
 FileListRequest::~FileListRequest() {

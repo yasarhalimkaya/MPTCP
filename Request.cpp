@@ -2,7 +2,7 @@
 #include <cstring>
 
 Request::Request() {
-	requestTypeNumber = 0;
+	requestType = 0;
 	memset(data, 0, sizeof(data));
 }
 
