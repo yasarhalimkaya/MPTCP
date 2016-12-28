@@ -3,6 +3,7 @@
 
 #include "Response.hpp"
 
+// TODO: Add class summary
 class FileListResponse: public Response {
 public:
 	FileListResponse();

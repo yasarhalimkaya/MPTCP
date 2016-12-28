@@ -6,8 +6,14 @@
 // TODO: Add class summary
 class Request {
 public:
-	uint8_t * getData();
-	size_t getSize();
+	inline uint8_t * getData() {
+		return data;
+	}
+
+	inline size_t getSize() {
+		return REQUEST_SIZE;
+	}
+
 	virtual ~Request();
 
 protected:
@@ -16,13 +22,5 @@ protected:
 	const static int REQUEST_SIZE = 10;
 	uint8_t data[REQUEST_SIZE];
 };
-
-inline uint8_t * Request::getData(){
-    return this->data;
-}
-
-inline size_t Request::getSize(){
-	return REQUEST_SIZE;
-}
 
 #endif /* REQUEST_HPP_ */
