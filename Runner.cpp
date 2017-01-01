@@ -2,6 +2,7 @@
 #include "FileListRequest.hpp"
 #include "FileSizeRequest.hpp"
 #include "FileDataRequest.hpp"
+#include "FileListResponse.hpp"
 
 #include <vector>
 #include <cstring>
@@ -42,9 +43,22 @@ int main(int argc, char* argv[]) {
 
 	// TODO: Remove before submission
 	Connection connection(servers.at(0));
+	//Connection connection2(servers.at(1));
 	
-	FileDataRequest fileDataRequest(1, 1, 50);
-	connection.send(fileDataRequest);
+	FileListRequest fileListRequest;
+	connection.send(fileListRequest);
+
+	FileListResponse fileListResponse;
+	connection.recv(fileListResponse);
+
+	uint8_t numberOfFiles = fileListResponse.getNumberOfFiles();
+	std::cout << "Number of files : " << (int)numberOfFiles << std::endl;
+
+	for (int i = 0; i < numberOfFiles; i++) {
+		std::cout << "File id : " << (int)fileListResponse.getFileId(i) << " File name : " << fileListResponse.getFileName(i) << std::endl;
+	}
+
+	//connection2.send(fileListRequest);
 
 	return 0;
 }

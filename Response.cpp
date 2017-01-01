@@ -1,9 +1,11 @@
 #include "Response.hpp"
 
 Response::Response() {
-	this->responseType = 0;
-    this->buffer = 0;
-    this->size = 0;
+	responseType = UNKNOWN;
+	buffer = 0;
+    size = 0;
+    parsed = false;
+    valid = false;
 }
 
 Response::~Response() {
