@@ -3,6 +3,7 @@
 #include "FileSizeRequest.hpp"
 #include "FileDataRequest.hpp"
 #include "FileListResponse.hpp"
+#include "FileSizeResponse.hpp"
 
 #include <vector>
 #include <cstring>
@@ -56,6 +57,15 @@ int main(int argc, char* argv[]) {
 
 	for (int i = 0; i < numberOfFiles; i++) {
 		std::cout << "File id : " << (int)fileListResponse.getFileId(i) << " File name : " << fileListResponse.getFileName(i) << std::endl;
+		std::cout << "Requesting size..." << std::endl;
+
+		FileSizeRequest fileSizeRequest(fileListResponse.getFileId(i));
+		connection.send(fileSizeRequest);
+
+		FileSizeResponse fileSizeResponse;
+		connection.recv(fileSizeResponse);
+
+		std::cout << "Size received : " << fileSizeResponse.getFileSize() << std::endl;
 	}
 
 	//connection2.send(fileListRequest);

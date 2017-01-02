@@ -6,10 +6,7 @@ FileListResponse::FileListResponse() {
 }
 
 FileListResponse::~FileListResponse() {
-	if (buffer) {
-		delete[] buffer;
-		buffer = 0;
-	}
+
 }
 
 uint8_t FileListResponse::getNumberOfFiles() {
@@ -39,7 +36,7 @@ std::string FileListResponse::getFileName(uint8_t index) {
 bool FileListResponse::parse() {
 	// If the response is already parsed, return if it's valid
 	if (parsed) {
-		std::cout << "FileListResponse: already parsed : " << parsed << std::endl;
+		std::cout << "FileListResponse: already parsed valid : " << valid << std::endl;
 		return valid;
 	}
 

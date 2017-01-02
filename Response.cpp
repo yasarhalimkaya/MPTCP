@@ -9,5 +9,8 @@ Response::Response() {
 }
 
 Response::~Response() {
-
+	if (buffer) {
+		delete[] buffer;
+		buffer = 0;
+	}
 }
