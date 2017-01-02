@@ -3,7 +3,6 @@
 
 #include "Request.hpp"
 
-// TODO: Add class summary
 class FileSizeRequest: public Request {
 public:
 	FileSizeRequest(uint8_t fileId);

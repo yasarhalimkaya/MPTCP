@@ -3,7 +3,12 @@
 
 #include <iostream>
 
-// TODO: Add class summary
+/**
+ * Base class for Request objects.
+ * As the request packet size is constant,
+ * it allocates the data buffer in the stack
+ * Derived classes should only fill the buffer accordingly.
+ */
 class Request {
 public:
 	inline uint8_t * getData() {

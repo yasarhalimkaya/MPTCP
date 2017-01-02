@@ -10,7 +10,12 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-// TODO: Add class summary
+/**
+ * Connection object for UDP transmissions
+ * Given a ServerConf containing server ip and port number
+ * it wraps the c style inet structures and sendto and recvfrom
+ * functions.
+ */
 class Connection {
 public:
 	Connection(ServerConf serverConf);

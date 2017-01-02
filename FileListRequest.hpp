@@ -3,7 +3,6 @@
 
 #include "Request.hpp"
 
-// TODO: Add class summary
 class FileListRequest : public Request {
 public:
 	FileListRequest();

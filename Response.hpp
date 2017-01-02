@@ -3,7 +3,11 @@
 
 #include <iostream>
 
-// TODO: Add class summary
+/**
+ * Base class for Response objects.
+ * Buffer size is variable, so derived classes
+ * should allocate and fill it accordingly.
+ */
 class Response {
 public:
     // Buffer to receive data is allocated by derived classes

@@ -93,7 +93,6 @@ bool Connection::recv(Response & response) {
 
 Connection::~Connection() {
 	if (this->initialized) {
-		std::cout << "Shutting down the socket" << std::endl;
 		shutdown(this->sockFd, SHUT_RDWR);
 		close(this->sockFd);
 	}

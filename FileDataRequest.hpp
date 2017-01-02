@@ -3,7 +3,6 @@
 
 #include "Request.hpp"
 
-// TODO: Add class summary
 class FileDataRequest: public Request {
 public:
 	FileDataRequest(uint8_t fileId, uint32_t startByte, uint32_t endByte);
