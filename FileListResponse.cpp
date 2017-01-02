@@ -36,20 +36,17 @@ std::string FileListResponse::getFileName(uint8_t index) {
 bool FileListResponse::parse() {
 	// If the response is already parsed, return if it's valid
 	if (parsed) {
-		std::cout << "FileListResponse: already parsed valid : " << valid << std::endl;
 		return valid;
 	}
 
 	// Check if the server returned an error response
 	if (buffer[0] == INVALID_REQUEST_TYPE) {
-		std::cout << "FileListResponse: INVALID_REQUEST_TYPE" << std::endl;
 		responseType = INVALID_REQUEST_TYPE;
 		goto ERROR;
 	}
 
 	// Check if the response type is the expected type
 	if (buffer[0] != GET_FILE_LIST_SUCCESS) {
-		std::cout << "FileListResponse: response type is not GET_FILE_LIST_SUCCESS" << std::endl;
 		goto ERROR;
 	}
 
@@ -69,6 +66,7 @@ bool FileListResponse::parse() {
 		files.push_back(file);
 	}
 
+	parsed = true;
 	valid = true;
 	return valid;
 
