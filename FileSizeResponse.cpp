@@ -4,6 +4,7 @@ FileSizeResponse::FileSizeResponse() {
 	size = 14;
 	buffer = new uint8_t[size];
 	fileSize = 0;
+	fileId = 0;
 }
 
 FileSizeResponse::~FileSizeResponse() {
@@ -16,6 +17,14 @@ uint32_t FileSizeResponse::getFileSize() {
 	}
 
 	return fileSize;
+}
+
+uint8_t FileSizeResponse::getFileId() {
+	if (!parse()) {
+		return 0;
+	}
+
+	return fileId;
 }
 
 bool FileSizeResponse::parse() {
@@ -44,6 +53,7 @@ bool FileSizeResponse::parse() {
 		goto ERROR;
 	}
 
+	fileId = buffer[1];
 	fileSize = ntohl(*reinterpret_cast<uint32_t*>(buffer+10));
 
 	valid = true;

@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
 		FileSizeResponse fileSizeResponse;
 		connection.recv(fileSizeResponse);
 
-		std::cout << "Size received : " << fileSizeResponse.getFileSize() << std::endl;
+		std::cout << "Size received : " << fileSizeResponse.getFileSize() << " for file with id : " << (int)fileSizeResponse.getFileId() << std::endl;
 	}
 
 	//connection2.send(fileListRequest);

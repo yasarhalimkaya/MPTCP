@@ -11,7 +11,7 @@ FileListResponse::~FileListResponse() {
 
 uint8_t FileListResponse::getNumberOfFiles() {
 	if (!parse()) {
-		return -1;
+		return 0;
 	}
 
 	return files.size();
@@ -19,7 +19,7 @@ uint8_t FileListResponse::getNumberOfFiles() {
 
 uint8_t FileListResponse::getFileId(uint8_t index) {
 	if (!parse() || index >= files.size()) {
-		return -1;
+		return 0;
 	}
 
 	return files.at(index).fileId;
