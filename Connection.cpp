@@ -106,9 +106,13 @@ uint32_t Connection::getTimeout() {
 	return recvTimeout;
 }
 
-Connection::~Connection() {
+void Connection::teardown() {
 	if (this->initialized) {
 		shutdown(this->sockFd, SHUT_RDWR);
 		close(this->sockFd);
 	}
+}
+
+Connection::~Connection() {
+
 }

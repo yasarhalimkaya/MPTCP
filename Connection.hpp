@@ -23,11 +23,11 @@ public:
 	bool send(const uint8_t * message, size_t size);
 	bool send(Request & request);
 
-	typedef enum _RECV_STATUS {
+	enum RECV_STATUS {
 		RECV_SUCCESS,
 		RECV_TIMEOUT,
 		RECV_FAIL
-	} RECV_STATUS;
+	};
 
 	RECV_STATUS recv(uint8_t * message, size_t size);
 	RECV_STATUS recv(Response & response);
@@ -35,6 +35,11 @@ public:
 	// Receive socket timeout in microseconds, no timeout by default
 	uint32_t getTimeout();
 	bool setTimeout(uint32_t usecs);
+
+	// Shutting down the sockets inside destructor
+	// prevents making copies of the object
+	// so, teardown must explicitly be called instead
+	void teardown();
 
 	virtual ~Connection();
 

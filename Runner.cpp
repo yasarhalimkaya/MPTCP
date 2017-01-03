@@ -45,14 +45,19 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
+	// Create connections
+	std::vector<Connection> connections;
+
+	for (int i = 0; i < servers.size(); i++) {
+		connections.push_back(Connection(servers.at(i)));
+	}
+
 	// TODO : Consider packet loss, and using other servers if this one fails
-	Connection connection(servers.at(0));
-	
 	FileListRequest fileListRequest;
-	connection.send(fileListRequest);
+	connections.at(0).send(fileListRequest);
 
 	FileListResponse fileListResponse;
-	connection.recv(fileListResponse);
+	connections.at(0).recv(fileListResponse);
 
 	while(true) {
 		std::cout << "File List:" << std::endl;
@@ -73,10 +78,10 @@ int main(int argc, char* argv[]) {
 		std::cout << "File " << fileId << " has been selected. Getting the size information..." << std::endl;
 
 		FileSizeRequest fileSizeRequest(fileId);
-		connection.send(fileSizeRequest);
+		connections.at(0).send(fileSizeRequest);
 
 		FileSizeResponse fileSizeResponse;
-		connection.recv(fileSizeResponse);
+		connections.at(0).recv(fileSizeResponse);
 
 		if (!fileSizeResponse.isValid()) {
 			if (fileSizeResponse.getResponseType() == Response::INVALID_FILE_ID) {
@@ -89,6 +94,11 @@ int main(int argc, char* argv[]) {
 		// Download
 		std::cout << "Downloading..." << std::endl;
 		std::cout << "Download statistics..." << std::endl;
+	}
+
+	// Teardown Connections to shutdown allocated sockets
+	for (int i = 0; i < connections.size(); i++) {
+		connections.at(i).teardown();
 	}
 
 	return 0;
