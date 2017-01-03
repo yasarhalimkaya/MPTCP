@@ -34,6 +34,8 @@ public:
     	return responseType;
     }
 
+    bool isValid();
+
     virtual ~Response();
 
 protected:

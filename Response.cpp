@@ -8,6 +8,10 @@ Response::Response() {
     valid = false;
 }
 
+bool Response::isValid() {
+	return parse();
+}
+
 Response::~Response() {
 	if (buffer) {
 		delete[] buffer;

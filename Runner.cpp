@@ -45,9 +45,8 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	// TODO: Remove before submission
+	// TODO : Consider packet loss, and using other servers if this one fails
 	Connection connection(servers.at(0));
-	//Connection connection2(servers.at(1));
 	
 	FileListRequest fileListRequest;
 	connection.send(fileListRequest);
@@ -55,21 +54,41 @@ int main(int argc, char* argv[]) {
 	FileListResponse fileListResponse;
 	connection.recv(fileListResponse);
 
-	uint8_t numberOfFiles = fileListResponse.getNumberOfFiles();
-	std::cout << "Number of files : " << (int)numberOfFiles << std::endl;
+	while(true) {
+		std::cout << "File List:" << std::endl;
 
-	for (int i = 0; i < numberOfFiles; i++) {
-		std::cout << "File id : " << (int)fileListResponse.getFileId(i) << " File name : " << fileListResponse.getFileName(i) << std::endl;
-		std::cout << "Requesting size..." << std::endl;
+		for (int i = 0; i < fileListResponse.getNumberOfFiles(); i++) {
+			std::cout << (int)fileListResponse.getFileId(i) << "	" << fileListResponse.getFileName(i) << std::endl;
+		}
 
-		FileSizeRequest fileSizeRequest(fileListResponse.getFileId(i));
+		std::cout << "Enter a number: ";
+		int32_t fileId;
+		std::cin >> fileId;
+
+		if (fileId == -1) {
+			std::cout << "Quitting..." << std::endl;
+			break;
+		}
+
+		std::cout << "File " << fileId << " has been selected. Getting the size information..." << std::endl;
+
+		FileSizeRequest fileSizeRequest(fileId);
 		connection.send(fileSizeRequest);
 
 		FileSizeResponse fileSizeResponse;
 		connection.recv(fileSizeResponse);
 
-		std::cout << "Size received : " << fileSizeResponse.getFileSize()
-				<< " for file with id : " << (int)fileSizeResponse.getFileId() << std::endl;
+		if (!fileSizeResponse.isValid()) {
+			if (fileSizeResponse.getResponseType() == Response::INVALID_FILE_ID) {
+				std::cout << "Request failed with error INVALID_FILE_ID" << std::endl;
+			}
+		} else {
+			std::cout << "File " << fileId << " is " << fileSizeResponse.getFileSize() << " bytes. Starting to download..." << std::endl;
+		}
+
+		// Download
+		std::cout << "Downloading..." << std::endl;
+		std::cout << "Download statistics..." << std::endl;
 	}
 
 	return 0;
