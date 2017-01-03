@@ -23,8 +23,18 @@ public:
 	bool send(const uint8_t * message, size_t size);
 	bool send(Request & request);
 
-	bool recv(uint8_t * message, size_t size);
-	bool recv(Response & response);
+	typedef enum _RECV_STATUS {
+		RECV_SUCCESS,
+		RECV_TIMEOUT,
+		RECV_FAIL
+	} RECV_STATUS;
+
+	RECV_STATUS recv(uint8_t * message, size_t size);
+	RECV_STATUS recv(Response & response);
+
+	// Receive socket timeout in microseconds, no timeout by default
+	uint32_t getTimeout();
+	bool setTimeout(uint32_t usecs);
 
 	virtual ~Connection();
 
@@ -33,6 +43,7 @@ private:
 	int sockFd;
 	struct hostent * host;
 	struct sockaddr_in destAddr;
+	uint32_t recvTimeout;
 };
 
 #endif /* CONNECTION_HPP_ */

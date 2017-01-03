@@ -1,7 +1,9 @@
 #include "Connection.hpp"
 #include <cstring>
 
-Connection::Connection(ServerConf serverConf) {
+Connection::Connection(ServerConf serverConf) :
+	recvTimeout(0)
+{
 	// Create inet structure to send data to server
 	host = gethostbyname(serverConf.ipAddr.c_str());
 
@@ -22,12 +24,10 @@ Connection::Connection(ServerConf serverConf) {
 
 	// Bind socket to client address to be able to receive data
 	if (bind(sockFd, (const sockaddr *)&clientAddr, sizeof(clientAddr)) != 0) {
-		std::cout << "Failed to bind the socket to given address" << std::endl;
 		this->initialized = false;
 	}
 
 	if (!sockFd) {
-		std::cout << "Connection: Failed to create a socket" << std::endl;
 		this->initialized = false;
 	} else {
 		this->initialized = true;
@@ -36,19 +36,16 @@ Connection::Connection(ServerConf serverConf) {
 
 bool Connection::send(const uint8_t * message, size_t size) {
 	if (!this->initialized) {
-		std::cout << "Connection: Connection is not initialized" << std::endl;
 		return false;
 	}
 
 	int n = sendto(this->sockFd, message, size, 0, (struct sockaddr *)&destAddr, sizeof(destAddr));
 
 	if (n == -1) {
-		std::cout << "Connection: sendto failed" << std::endl;
 		return false;
 	}
 
 	if (n < size) {
-		std::cout << "Connection: Message could not be sent successfully" << std::endl;
 		return false;
 	}
 
@@ -59,15 +56,13 @@ bool Connection::send(Request & request){
 	return send(request.getData(), request.getSize());
 }
 
-bool Connection::recv(uint8_t * message, size_t size) {
+Connection::RECV_STATUS Connection::recv(uint8_t * message, size_t size) {
 	if (!this->initialized) {
-		std::cout << "Connection: Connection is not initialized" << std::endl;
-		return false;
+		return RECV_FAIL;
 	}
 
 	if (message == 0) {
-		std::cout << "Connection: no space was allocated for recv buffer" << std::endl;
-		return false;
+		return RECV_FAIL;
 	}
 
 	sockaddr_in from;
@@ -75,20 +70,40 @@ bool Connection::recv(uint8_t * message, size_t size) {
 	int n = recvfrom(this->sockFd, message, size, 0, (struct sockaddr *)&from, &fromLen);
 
 	if (n == -1) {
-		std::cout << "Connection: Recvfrom failed" << std::endl;
-		return false;
+		if (errno == EAGAIN || errno == EWOULDBLOCK) {
+			return RECV_TIMEOUT;
+		} else {
+			return RECV_FAIL;
+		}
 	}
 
-	if (n <= 0) {
-		std::cout << "Connection: No data received" << std::endl;
+	if (n <= 0) { // No data received
+		return RECV_FAIL;
+	}
+
+	return RECV_SUCCESS;
+}
+
+Connection::RECV_STATUS Connection::recv(Response & response) {
+	return recv(response.getBuffer(), response.getSize());
+}
+
+bool Connection::setTimeout(uint32_t usecs) {
+	recvTimeout = usecs;
+
+	struct timeval tv;
+	tv.tv_sec = 0;
+	tv.tv_usec = recvTimeout;
+
+	if (setsockopt(this->sockFd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)) < 0) {
 		return false;
 	}
 
 	return true;
 }
 
-bool Connection::recv(Response & response) {
-	return recv(response.getBuffer(), response.getSize());
+uint32_t Connection::getTimeout() {
+	return recvTimeout;
 }
 
 Connection::~Connection() {
