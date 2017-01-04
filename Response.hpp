@@ -2,6 +2,7 @@
 #define RESPONSE_HPP_
 
 #include <iostream>
+#include "Common.hpp"
 
 /**
  * Base class for Response objects.

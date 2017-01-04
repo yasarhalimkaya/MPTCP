@@ -12,26 +12,35 @@ Downloader::Downloader(std::vector<Connection>& connections, uint8_t fileId,
 }
 
 bool Downloader::start() {
-	// If the whole file can fit in a single packet, download with single request
+	bool retVal = false;
+	std::ofstream file(fileName);
+
+	// If the whole file can fit in a single packet, download with a single request
 	if (fileSize <= MAX_DATA_SIZE) {
 		FileDataRequest fileDataRequest(fileId, 1, fileSize);
 		connections.at(0).send(fileDataRequest);
 
-		FileDataResponse fileDataResponse;
-		connections.at(0).recv(fileDataResponse);
+		while(true) {
+			FileDataResponse fileDataResponse;
+			connections.at(0).recv(fileDataResponse);
 
-		if (fileDataResponse.isValid() && fileDataResponse.getDataSize() == fileSize) {
-			std::ofstream file(fileName);
-			file << fileDataResponse.getData();
-			file.close();
-			return true;
-		} else {
-			// TODO : Altough we set a MAX_DATA_SIZE, server's may not be the same
-			return false;
+			if (!fileDataResponse.isValid()) {
+				std::cout << "Invalid response" << std::endl;
+				retVal = false;
+				break;
+			}
+
+			file.write((const char*)fileDataResponse.getData(), fileDataResponse.getDataSize());
+
+			if (fileDataResponse.getEndByte() == fileSize) {
+				retVal = true;
+				break;
+			}
 		}
 	}
 
-	return false;
+	file.close();
+	return retVal;
 }
 
 Downloader::~Downloader() {

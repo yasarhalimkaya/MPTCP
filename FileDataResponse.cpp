@@ -4,7 +4,7 @@ FileDataResponse::FileDataResponse() {
 	fileId = 0;
 	startByte = 0;
 	endByte = 0;
-	size = 1010;
+	size = MAX_DATA_SIZE+HEADER_SIZE;
 	buffer = new uint8_t[size];
 }
 
@@ -37,7 +37,7 @@ uint32_t FileDataResponse::getEndByte() {
 }
 
 uint8_t* FileDataResponse::getData() {
-	return buffer + 10;
+	return buffer + HEADER_SIZE;
 }
 
 uint32_t FileDataResponse::getDataSize() {

@@ -1,7 +1,7 @@
 #include "FileListResponse.hpp"
 
 FileListResponse::FileListResponse() {
-	size = 1500;
+	size = MAX_DATA_SIZE+HEADER_SIZE;
 	buffer = new uint8_t[this->size];
 }
 
@@ -65,7 +65,7 @@ bool FileListResponse::parse() {
 	}
 
 	// Parse the response
-	for (int i = 0, index = 10; i < (int)buffer[1]; i++) {
+	for (int i = 0, index = HEADER_SIZE; i < (int)buffer[1]; i++) {
 		File file;
 
 		file.fileId = buffer[index];

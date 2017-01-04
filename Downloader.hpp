@@ -20,9 +20,6 @@ private:
 	uint8_t fileId;
 	std::string fileName;
 	uint32_t fileSize;
-
-	// Max bytes sent in single packet
-	const uint32_t MAX_DATA_SIZE = 1000;
 };
 
 #endif /* DOWNLOADER_HPP_ */

@@ -2,6 +2,7 @@
 #define REQUEST_HPP_
 
 #include <iostream>
+#include "Common.hpp"
 
 /**
  * Base class for Request objects.
@@ -16,7 +17,7 @@ public:
 	}
 
 	inline size_t getSize() {
-		return REQUEST_SIZE;
+		return HEADER_SIZE;
 	}
 
 	virtual ~Request();
@@ -24,8 +25,7 @@ public:
 protected:
 	Request();
 	uint8_t requestType;
-	const static int REQUEST_SIZE = 10;
-	uint8_t data[REQUEST_SIZE];
+	uint8_t data[HEADER_SIZE];
 };
 
 #endif /* REQUEST_HPP_ */

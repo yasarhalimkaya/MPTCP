@@ -1,7 +1,7 @@
 #include "FileSizeResponse.hpp"
 
 FileSizeResponse::FileSizeResponse() {
-	size = 14;
+	size = HEADER_SIZE+4;
 	buffer = new uint8_t[size];
 	fileSize = 0;
 	fileId = 0;
