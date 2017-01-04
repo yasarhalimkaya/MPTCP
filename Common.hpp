@@ -14,9 +14,9 @@ inline bool md5sum(std::string filePath) {
 	std::stringstream ss;
 
 #ifdef __APPLE__
-	ss << "md5 " << filePath;
+	ss << "md5 '" << filePath << "'";
 #elif __linux__
-	ss << "md5sum " << filePath;
+	ss << "md5sum '" << filePath << "'";
 #endif
 
 	if (-1 == system(ss.str().c_str())) {
