@@ -5,12 +5,13 @@
 #include "FileListResponse.hpp"
 #include "FileSizeResponse.hpp"
 #include "FileDataResponse.hpp"
+#include "Downloader.hpp"
 
 #include <vector>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
-#include <fstream>
+#include <ctime>
 
 int main(int argc, char* argv[]) {
 
@@ -92,11 +93,24 @@ int main(int argc, char* argv[]) {
 		}
 
 		// Download
-		std::cout << "Downloading..." << std::endl;
-		std::cout << "Download statistics..." << std::endl;
+		Downloader downloader(connections, fileId, fileListResponse.getFileNameById(fileId), fileSizeResponse.getFileSize());
+
+		struct timespec start, end;
+		clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+		bool downloaded = downloader.start();
+		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+
+		uint64_t delta_ms = (end.tv_sec - start.tv_sec) * 1000 + (end.tv_nsec - start.tv_nsec) / 1000000;
+
+		if (downloaded) {
+			std::cout << "File " << fileId << " has been downloaded in " << delta_ms << "ms" << std::endl;
+			md5sum(fileListResponse.getFileNameById(fileId));
+		} else {
+			std::cout << "Download failed!" << std::endl;
+		}
 	}
 
-	// Teardown Connections to shutdown allocated sockets
+	// Tear down Connections to shutdown allocated sockets
 	for (int i = 0; i < connections.size(); i++) {
 		connections.at(i).teardown();
 	}

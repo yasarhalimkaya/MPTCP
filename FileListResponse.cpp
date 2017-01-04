@@ -33,6 +33,20 @@ std::string FileListResponse::getFileName(uint8_t index) {
 	return files.at(index).fileName;
 }
 
+std::string FileListResponse::getFileNameById(uint8_t fileId) {
+	if (!parse()) {
+		return std::string("");
+	}
+
+	for (int i = 0; i < files.size(); i++) {
+		if (files.at(i).fileId == fileId) {
+			return files.at(i).fileName;
+		}
+	}
+
+	return std::string("");
+}
+
 bool FileListResponse::parse() {
 	// If the response is already parsed, return if it's valid
 	if (parsed) {
@@ -75,8 +89,3 @@ ERROR:
 	valid = false;
 	return valid;
 }
-
-
-
-
-

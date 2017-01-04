@@ -12,6 +12,7 @@ public:
 	uint8_t getNumberOfFiles();
 	uint8_t getFileId(uint8_t index);
 	std::string getFileName(uint8_t index);
+	std::string getFileNameById(uint8_t fileId);
 
 	virtual ~FileListResponse();
 

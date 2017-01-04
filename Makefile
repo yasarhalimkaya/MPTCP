@@ -9,7 +9,8 @@ CLIENT_SRC = Runner.cpp \
 			 Response.cpp \
 			 FileListResponse.cpp \
 			 FileSizeResponse.cpp \
-			 FileDataResponse.cpp
+			 FileDataResponse.cpp \
+			 Downloader.cpp
 			 
 SERVER_SRC = EchoServer.cpp
 
