@@ -6,6 +6,7 @@
 class FileDataResponse: public Response {
 public:
 	FileDataResponse();
+	FileDataResponse(const FileDataResponse &);
 
 	uint8_t getFileId();
 	uint32_t getStartByte();

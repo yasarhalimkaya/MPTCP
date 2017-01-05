@@ -4,6 +4,7 @@
 #include "Common.hpp"
 #include "Request.hpp"
 #include "Response.hpp"
+#include "DeltaTimer.hpp"
 
 #include <iostream>
 #include <netdb.h>
@@ -49,6 +50,8 @@ private:
 	struct hostent * host;
 	struct sockaddr_in destAddr;
 	uint32_t recvTimeout;
+	DeltaTimer timer;
+	uint32_t timerCount;
 };
 
 #endif /* CONNECTION_HPP_ */

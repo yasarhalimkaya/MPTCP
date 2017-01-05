@@ -6,12 +6,12 @@
 #include "FileSizeResponse.hpp"
 #include "FileDataResponse.hpp"
 #include "Downloader.hpp"
+#include "DeltaTimer.hpp"
 
 #include <vector>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
-#include <ctime>
 
 int main(int argc, char* argv[]) {
 
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 		ServerConf serverConf;
 
 		serverConf.ipAddr = arg.substr(0, delPos);
-		serverConf.port = atoi(arg.substr(delPos+1).c_str());
+		serverConf.port = strtol(arg.substr(delPos+1).c_str(), NULL, 10);
 
 		servers.push_back(serverConf);
 	}
@@ -68,8 +68,13 @@ int main(int argc, char* argv[]) {
 		}
 
 		std::cout << "Enter a number: ";
+		std::string input;
+		std::cin >> input;
+
 		int32_t fileId;
-		std::cin >> fileId;
+		if ((fileId = strtol(input.c_str(), NULL, 10)) == 0 && input.c_str()[0] != '0') {
+			continue;
+		}
 
 		if (fileId == -1) {
 			std::cout << "Quitting..." << std::endl;
@@ -95,15 +100,13 @@ int main(int argc, char* argv[]) {
 		// Download
 		Downloader downloader(connections, fileId, fileListResponse.getFileNameById(fileId), fileSizeResponse.getFileSize());
 
-		struct timespec start, end;
-		clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+		DeltaTimer timer;
+		timer.start();
 		bool downloaded = downloader.start();
-		clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-
-		uint64_t delta_ms = (end.tv_sec - start.tv_sec) * 1000 + (end.tv_nsec - start.tv_nsec) / 1000000;
+		timer.stop();
 
 		if (downloaded) {
-			std::cout << "File " << fileId << " has been downloaded in " << delta_ms << "ms" << std::endl;
+			std::cout << "File " << fileId << " has been downloaded in " << timer.getDeltaMSec() << "ms" << std::endl;
 			md5sum(fileListResponse.getFileNameById(fileId));
 		} else {
 			std::cout << "Download failed!" << std::endl;

@@ -8,6 +8,17 @@ FileDataResponse::FileDataResponse() {
 	buffer = new uint8_t[size];
 }
 
+FileDataResponse::FileDataResponse(const FileDataResponse & obj) {
+	fileId = obj.fileId;
+	startByte = obj.startByte;
+	endByte = obj.endByte;
+	size = obj.size;
+	parsed = obj.parsed;
+	valid = obj.valid;
+	buffer = new uint8_t[size];
+	memcpy(buffer, obj.buffer, size);
+}
+
 FileDataResponse::~FileDataResponse() {
 
 }
