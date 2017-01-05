@@ -2,8 +2,7 @@
 #include <cstring>
 
 Connection::Connection(ServerConf serverConf) :
-	recvTimeout(0),
-	timerCount(0)
+	recvTimeout(0)
 {
 	// Create inet structure to send data to server
 	host = gethostbyname(serverConf.ipAddr.c_str());
@@ -68,11 +67,7 @@ Connection::RECV_STATUS Connection::recv(uint8_t * message, size_t size) {
 
 	sockaddr_in from;
 	socklen_t fromLen = sizeof(from);
-	timer.start();
 	int n = recvfrom(this->sockFd, message, size, 0, (struct sockaddr *)&from, &fromLen);
-	timer.stop();
-	recvTimeout = (recvTimeout + timer.getDeltaUSec()) / ++timerCount;
-	//std::cout << "recvTimeout : " << recvTimeout  << " timerCount " << timerCount << std::endl;
 
 	if (n == -1) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {

@@ -24,12 +24,17 @@ private:
 	uint32_t fileSize;
 
 	std::vector<std::thread> threads;
+	std::vector<bool> threadStatus;
 	void threadLoop(Connection conn, uint32_t startByte, uint32_t endByte, uint32_t vectorIndex);
 
-	std::vector<std::vector<std::vector<FileDataResponse>>> responses;
-	void addFileDataResponse(FileDataResponse &, uint32_t vectorIndex);
+	std::vector<std::vector<FileDataResponse>> responses;
 
-	std::mutex addResponseMutex;
+	typedef enum _STATE {
+		SEND,
+		RECEIVE,
+		RECOVER,
+		REORDER
+	} STATE;
 };
 
 #endif /* DOWNLOADER_HPP_ */
