@@ -8,6 +8,8 @@ public:
 	FileDataResponse();
 	FileDataResponse(const FileDataResponse &);
 
+	FileDataResponse & operator=(const FileDataResponse &);
+
 	uint8_t getFileId();
 	uint32_t getStartByte();
 	uint32_t getEndByte();

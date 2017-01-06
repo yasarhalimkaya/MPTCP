@@ -1,8 +1,7 @@
 #include "FileSizeResponse.hpp"
+#include <netdb.h>
 
 FileSizeResponse::FileSizeResponse() {
-	size = HEADER_SIZE+4;
-	buffer = new uint8_t[size];
 	fileSize = 0;
 	fileId = 0;
 }

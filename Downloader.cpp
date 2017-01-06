@@ -1,6 +1,7 @@
 #include "Downloader.hpp"
 #include "FileDataRequest.hpp"
 #include <fstream>
+#include <algorithm>
 
 Downloader::Downloader(std::vector<Connection>& connections, uint8_t fileId,
 		std::string fileName, uint32_t fileSize) {
@@ -21,7 +22,7 @@ bool Downloader::start() {
 	uint32_t index = 1;
 	std::vector<uint32_t> windowSizes;
 	for (int i = 0; i < connections.size(); i++) {
-		windowSizes.push_back(1000000);
+		windowSizes.push_back(10000);
 	}
 
 	std::ofstream file(fileName);
@@ -73,10 +74,10 @@ bool Downloader::start() {
 				file.write((char*)responses.at(i).at(j).getData(), responses.at(i).at(j).getDataSize());
 			}
 		}
-
+		
 		// Clear responses
 		responses.clear();
-
+			
 		// TODO
 		// Check thread status and modify window size
 		for (int i = 0; i < threadStatus.size(); i++) {
@@ -86,7 +87,7 @@ bool Downloader::start() {
 				windowSizes.at(i) /= 2;
 		}
 
-		threadStatus.clear();
+		threadStatus.clear();	
 	}
 
 	file.close();
@@ -157,10 +158,11 @@ void Downloader::threadLoop(Connection conn, uint32_t startByte, uint32_t endByt
 					}
 				}
 
-				if (dirty == 0 && responses.at(index).back().getEndByte() == endByte)
+				if (dirty == 0 && responses.at(index).back().getEndByte() == endByte) {
 					terminate = true;
+				}
 				else {
-					std::cout << "Trying again due in thread : " << index << std::endl;
+					std::cout << "Trying again in thread : " << index << std::endl;
 					threadStatus.at(index) = false;
 					state = SEND;
 					responses.at(index).clear();

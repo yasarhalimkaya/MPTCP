@@ -11,12 +11,10 @@
  */
 class Response {
 public:
-    // Buffer to receive data is allocated by derived classes
     inline uint8_t* getBuffer() {
     	return buffer;
     }
 
-    // Size of the buffer is calculated according to the request
     inline size_t getSize() {
     	return size;
     }
@@ -46,8 +44,8 @@ protected:
     bool parsed;
     bool valid;
     ResponseType responseType;
-    uint8_t* buffer;
-    size_t size;
+    const size_t size = MAX_DATA_SIZE + HEADER_SIZE;
+    uint8_t buffer[MAX_DATA_SIZE + HEADER_SIZE];
 };
 
 #endif /* RESPONSE_HPP_ */

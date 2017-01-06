@@ -1,7 +1,7 @@
 #ifndef DELTATIMER_HPP_
 #define DELTATIMER_HPP_
 
-#include <unistd.h>
+#include <cstdint>
 #include <ctime>
 
 class DeltaTimer {

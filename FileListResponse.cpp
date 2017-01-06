@@ -1,8 +1,7 @@
 #include "FileListResponse.hpp"
 
 FileListResponse::FileListResponse() {
-	size = MAX_DATA_SIZE+HEADER_SIZE;
-	buffer = new uint8_t[this->size];
+
 }
 
 FileListResponse::~FileListResponse() {

@@ -27,6 +27,7 @@ inline bool md5sum(std::string filePath) {
 }
 
 static const uint32_t MAX_DATA_SIZE = 1000;
+
 /**
  * 1 byte request/response type
  * 1 byte file id

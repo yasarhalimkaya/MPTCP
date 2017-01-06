@@ -15,7 +15,7 @@ CLIENT_SRC = Runner.cpp \
 			 
 SERVER_SRC = EchoServer.cpp
 
-CFLAGS = -std=c++11
+CFLAGS = -std=c++11 -pthread
 
 client: $(CLIENT_SRC)
 	g++ $(CLIENT_SRC) $(CFLAGS) -o client
