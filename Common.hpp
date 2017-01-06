@@ -36,4 +36,16 @@ static const uint32_t MAX_DATA_SIZE = 1000;
  */
 static const uint32_t HEADER_SIZE = 10;
 
+/**
+ * Hardcoded receive timeout in usecs
+ */
+static const uint32_t RECV_TIMEOUT = 100000; // 100 ms
+
+/**
+ * Initial window size
+ * Each connection has its own window size
+ * changin according to its performance
+ */
+static const uint32_t WINDOW_SIZE = 1000;
+
 #endif /* COMMON_HPP_ */

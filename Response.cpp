@@ -2,7 +2,7 @@
 
 Response::Response() {
 	responseType = UNKNOWN;
-    parsed = false;
+	parsed = false;
     valid = false;
 }
 

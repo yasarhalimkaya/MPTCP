@@ -18,23 +18,26 @@ bool Downloader::start() {
 		return retVal;
 	}
 
-	uint32_t timeout = 100000; // 100ms
 	uint32_t index = 1;
 	std::vector<uint32_t> windowSizes;
 	for (int i = 0; i < connections.size(); i++) {
-		windowSizes.push_back(10000);
+		windowSizes.push_back(WINDOW_SIZE);
 	}
 
 	std::ofstream file(fileName);
+	uint32_t percentage = 0;
+	float writtenDataSize = 0.0f;
 
 	while (true) {
+		std::cout << "Downloading " << percentage << "%\r";
+		std::cout.flush();
+
 		if (index > fileSize) {
 			retVal = true;
 			break;
 		}
 
 		for (int i = 0; i < connections.size(); i++) {
-			connections.at(i).setTimeout(timeout);
 
 			uint32_t startByte = index;
 			uint32_t endByte = index + windowSizes.at(i) - 1;
@@ -72,22 +75,27 @@ bool Downloader::start() {
 		for (int i = 0; i < responses.size(); i++) {
 			for (int j = 0; j < responses.at(i).size(); j++) {
 				file.write((char*)responses.at(i).at(j).getData(), responses.at(i).at(j).getDataSize());
+				writtenDataSize += (float)responses.at(i).at(j).getDataSize();
 			}
 		}
 		
 		// Clear responses
 		responses.clear();
-			
-		// TODO
+
 		// Check thread status and modify window size
 		for (int i = 0; i < threadStatus.size(); i++) {
-			if (threadStatus.at(i))
+			if (threadStatus.at(i)) {
 				windowSizes.at(i) *= 2;
-			else
-				windowSizes.at(i) /= 2;
+			}
+			else {
+				if (windowSizes.at(i) > WINDOW_SIZE)
+					windowSizes.at(i) /= 2;
+			}
 		}
 
-		threadStatus.clear();	
+		threadStatus.clear();
+
+		percentage = (writtenDataSize / (float)fileSize) * 100.0f;
 	}
 
 	file.close();
@@ -99,13 +107,10 @@ void Downloader::threadLoop(Connection conn, uint32_t startByte, uint32_t endByt
 	uint32_t timeOutCount = 0;
 	bool terminate = false;
 
-	uint32_t localStartByte = startByte;
-	uint32_t localEndByte = endByte;
-
 	while(!terminate) {
 		switch (state) {
 			case SEND: {
-				FileDataRequest fileDataRequest(fileId, localStartByte, localEndByte);
+				FileDataRequest fileDataRequest(fileId, startByte, endByte);
 				conn.send(fileDataRequest);
 				state = RECEIVE;
 				break;
@@ -118,7 +123,7 @@ void Downloader::threadLoop(Connection conn, uint32_t startByte, uint32_t endByt
 					if (status == Connection::RECV_TIMEOUT) {
 						timeOutCount++;
 						if (timeOutCount >= 3) {
-							std::cout << "Connection timed out 3 times in a row in thread " << index << std::endl;
+							//std::cout << "Connection timed out 3 times in a row in thread " << index << std::endl;
 							break;
 						}
 					} else {
@@ -132,7 +137,7 @@ void Downloader::threadLoop(Connection conn, uint32_t startByte, uint32_t endByt
 					responses.at(index).push_back(response);
 
 					// TODO : Not that easy, broo
-					if (response.getEndByte() == localEndByte) {
+					if (response.getEndByte() == endByte) {
 						break;
 					}
 				}
@@ -151,18 +156,26 @@ void Downloader::threadLoop(Connection conn, uint32_t startByte, uint32_t endByt
 				std::sort(responses.at(index).begin(), responses.at(index).end(), custom);
 
 				// Check if there is missing packages
-				uint32_t dirty = 0;
+				bool dirty = false;
+
+				if (responses.at(index).front().getStartByte() != startByte)
+					dirty = true;
+
+				if (responses.at(index).back().getEndByte() != endByte)
+					dirty = true;
+
 				for (int i = 0; i < responses.at(index).size()-1; i++) {
 					if (responses.at(index).at(i).getEndByte() != responses.at(index).at(i+1).getStartByte() - 1) {
-						dirty++;
+						dirty = true;
+						break;
 					}
 				}
 
-				if (dirty == 0 && responses.at(index).back().getEndByte() == endByte) {
+				if (!dirty) {
 					terminate = true;
 				}
 				else {
-					std::cout << "Trying again in thread : " << index << std::endl;
+					//std::cout << "Trying again in thread : " << index << std::endl;
 					threadStatus.at(index) = false;
 					state = SEND;
 					responses.at(index).clear();
