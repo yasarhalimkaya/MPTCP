@@ -32,4 +32,4 @@ How to article to build and run the app
 
 * Repo owner or admin
 
-  ysrhlmky (yasarhalimkaya@gmail.com)
+	ysrhlmky (yasarhalimkaya@gmail.com)
