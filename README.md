@@ -34,7 +34,7 @@ How to article to build and run the app
 
 	Hardcoded timeout (100ms), it could have been adaptive
 
-	Do not favour faster connections, each connections are waited to be done, slower ones blocks the others to proceed further
+	Do not favour faster connections, each connections are waited to be done, slower ones block the others to proceed further
 
 	Followed a rigorous approach while checking the recevied data's validity, retransmit whole chunk if it's not valid
 
@@ -43,10 +43,6 @@ How to article to build and run the app
 	Applied a window size per connection, with minimum and starting from 1K bytes, doubling if the latest transmission is successfull setting in half if not
 
 	Reliable, altough it may request too many redundant chunks due to retransmissions
-
-	Have been implemented in C++ from scratch, it should be faster than its Java counterparts
-
-	Pretty output during transmission
 
 ### Who do I talk to? ###
 
