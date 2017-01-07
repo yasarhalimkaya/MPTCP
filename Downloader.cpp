@@ -86,10 +86,15 @@ bool Downloader::start() {
 		for (int i = 0; i < threadStatus.size(); i++) {
 			if (threadStatus.at(i)) {
 				windowSizes.at(i) *= 2;
+
+				if (windowSizes.at(i) > MAX_WINDOW_SIZE)
+					windowSizes.at(i) = MAX_WINDOW_SIZE;					
 			}
 			else {
-				if (windowSizes.at(i) > WINDOW_SIZE)
-					windowSizes.at(i) /= 2;
+				windowSizes.at(i) /= 2;
+
+				if (windowSizes.at(i) < WINDOW_SIZE)
+					windowSizes.at(i) = WINDOW_SIZE;		
 			}
 		}
 

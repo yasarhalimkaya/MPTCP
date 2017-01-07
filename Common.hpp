@@ -48,4 +48,9 @@ static const uint32_t RECV_TIMEOUT = 100000; // 100 ms
  */
 static const uint32_t WINDOW_SIZE = 1000;
 
+/**
+ *
+ */
+static const uint32_t MAX_WINDOW_SIZE = 1000000;
+
 #endif /* COMMON_HPP_ */

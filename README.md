@@ -16,7 +16,7 @@ How to article to build and run the app
 
 	./client <server_ip>:<port> <server_ip>:<port>
 
-	It should also support more than two interfaces, altough not tested
+	More than two interfaces are supported
 
 * Dependencies
   
@@ -43,6 +43,8 @@ How to article to build and run the app
 	Applied a window size per connection, with minimum and starting from 1K bytes, doubling if the latest transmission is successfull setting in half if not
 
 	Reliable, altough it may request too many redundant chunks due to retransmissions
+
+	Multiple interfaces are supported
 
 ### Who do I talk to? ###
 
