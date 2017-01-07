@@ -128,7 +128,6 @@ void Downloader::threadLoop(Connection conn, uint32_t startByte, uint32_t endByt
 					if (status == Connection::RECV_TIMEOUT) {
 						timeOutCount++;
 						if (timeOutCount >= 3) {
-							//std::cout << "Connection timed out 3 times in a row in thread " << index << std::endl;
 							break;
 						}
 					} else {
@@ -180,7 +179,6 @@ void Downloader::threadLoop(Connection conn, uint32_t startByte, uint32_t endByt
 					terminate = true;
 				}
 				else {
-					//std::cout << "Trying again in thread : " << index << std::endl;
 					threadStatus.at(index) = false;
 					state = SEND;
 					responses.at(index).clear();
